@@ -15,7 +15,7 @@ public class Balance_BallScript : MonoBehaviour {
 	{
 		initialPosition = new Vector3 (0.32f, 0.85f, 0f);
 		transform.position = initialPosition;
-		transform.rigidbody2D.AddForce( new Vector2(-3000,0));
+		transform.GetComponent<Rigidbody2D>().AddForce( new Vector2(-3000,0));
 	}
 	
 	// Update is called once per frame

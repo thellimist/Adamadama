@@ -33,7 +33,7 @@ public class MissileSpawnerScript : MonoBehaviour
 				GameObject[] missileClones =GameObject.FindGameObjectsWithTag ("Missile");
 				for (int i = 0; i<missileClones.Length; i++) {
 					
-					missileClones[i].rigidbody2D.velocity = (new Vector3(-2.0f, 0.0f, 0.0f));
+					missileClones[i].GetComponent<Rigidbody2D>().velocity = (new Vector3(-2.0f, 0.0f, 0.0f));
 				}
 		}
 }

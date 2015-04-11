@@ -42,7 +42,7 @@ public class BoxSpawnerScript : MonoBehaviour {
 			GameObject[] crateClones =GameObject.FindGameObjectsWithTag ("Crate");
 				for (int i = 0; i<crateClones.Length; i++) {
 					
-					crateClones[i].rigidbody2D.velocity = (new Vector3(-7.0f, 0.0f, 0.0f));
+					crateClones[i].GetComponent<Rigidbody2D>().velocity = (new Vector3(-7.0f, 0.0f, 0.0f));
             	}
 		}
 	}

@@ -15,7 +15,7 @@ public class MissilesCollider : MonoBehaviour {
 								Destroy (gameObject);
 						}
 				} else {
-						rigidbody2D.velocity = Vector2.zero;
+						GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 				}
 	}
 }

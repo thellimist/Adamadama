@@ -27,10 +27,10 @@ public class MultiPlayerBalance_BarScript : MonoBehaviour {
 		Vector3 syncVelocity = Vector3.zero;
 		if (stream.isWriting)
 		{
-			syncPosition = rigidbody.position;
+			syncPosition = GetComponent<Rigidbody>().position;
 			stream.Serialize(ref syncPosition);
 			
-			syncPosition = rigidbody.velocity;
+			syncPosition = GetComponent<Rigidbody>().velocity;
 			stream.Serialize(ref syncVelocity);
 		}
 		else
@@ -43,7 +43,7 @@ public class MultiPlayerBalance_BarScript : MonoBehaviour {
 			lastSynchronizationTime = Time.time;
 			
 			syncEndPosition = syncPosition + syncVelocity * syncDelay;
-			syncStartPosition = rigidbody.position;
+			syncStartPosition = GetComponent<Rigidbody>().position;
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class MultiPlayerBalance_BarScript : MonoBehaviour {
 	
 	void Update()
 	{
-		if (networkView.isMine)
+		if (GetComponent<NetworkView>().isMine)
 		{
 			InputMovement();
 			InputColorChange();
@@ -70,12 +70,12 @@ public class MultiPlayerBalance_BarScript : MonoBehaviour {
 	{
 		if (Input.GetKey (KeyCode.W)) {
 						angle += 0.1f;
-						rigidbody2D.transform.RotateAround (transform.position, Vector3.forward, angle);
+						GetComponent<Rigidbody2D>().transform.RotateAround (transform.position, Vector3.forward, angle);
 				}
 		
 		if (Input.GetKey (KeyCode.S)) {
 						angle -= 0.1f;
-			rigidbody2D.transform.RotateAround (transform.position, Vector3.forward, angle);
+			GetComponent<Rigidbody2D>().transform.RotateAround (transform.position, Vector3.forward, angle);
 				}
 
 	}
@@ -83,8 +83,8 @@ public class MultiPlayerBalance_BarScript : MonoBehaviour {
 	private void SyncedMovement()
 	{
 		syncTime += Time.deltaTime;
-		if (rigidbody != null) {
-						rigidbody.position = Vector3.Lerp (syncStartPosition, syncEndPosition, syncTime / syncDelay);
+		if (GetComponent<Rigidbody>() != null) {
+						GetComponent<Rigidbody>().position = Vector3.Lerp (syncStartPosition, syncEndPosition, syncTime / syncDelay);
 				}
 	}
 	
@@ -97,10 +97,10 @@ public class MultiPlayerBalance_BarScript : MonoBehaviour {
 	
 	[RPC] void ChangeColorTo(Vector3 color)
 	{
-		renderer.material.color = new Color(color.x, color.y, color.z, 1f);
+		GetComponent<Renderer>().material.color = new Color(color.x, color.y, color.z, 1f);
 		
-		if (networkView.isMine)
-			networkView.RPC("ChangeColorTo", RPCMode.OthersBuffered, color);
+		if (GetComponent<NetworkView>().isMine)
+			GetComponent<NetworkView>().RPC("ChangeColorTo", RPCMode.OthersBuffered, color);
 	}
 
 

@@ -79,11 +79,11 @@ public class MiniGameController : MonoBehaviour
 	void Update () 
 	{
 		if (MainMenu.isSoundOn == true) {
-						if (audio.isPlaying == false) {
-								audio.Play ();
+						if (GetComponent<AudioSource>().isPlaying == false) {
+								GetComponent<AudioSource>().Play ();
 						}
 				} else {
-			audio.Stop();
+			GetComponent<AudioSource>().Stop();
 				}
 		score += Time.deltaTime;
 		if (gameOver == false) {

@@ -8,11 +8,11 @@ public class MainMenu : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		audio.Play ();
+		GetComponent<AudioSource>().Play ();
 	}
 	void Awake() {
 		DontDestroyOnLoad(transform.gameObject);
-		audio.Stop ();
+		GetComponent<AudioSource>().Stop ();
 	}
 	// Update is called once per frame
 	void Update () 
@@ -21,13 +21,13 @@ public class MainMenu : MonoBehaviour
 				Application.Quit();
 		}
 		if (MainMenu.isSoundOn == true) {
-				if(audio.isPlaying == true){
+				if(GetComponent<AudioSource>().isPlaying == true){
 				}
 				else{
-					audio.Play ();
+					GetComponent<AudioSource>().Play ();
 				}
 		} else {
-			audio.Stop();
+			GetComponent<AudioSource>().Stop();
 		}
 	}
 
