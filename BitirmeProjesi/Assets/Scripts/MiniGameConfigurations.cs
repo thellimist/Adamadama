@@ -22,8 +22,8 @@ public class MiniGameConfigurations : MonoBehaviour {
 
 	
 
-	public static GameState maximumAvailableGameState = GameState.Level5State1;
+	public static GameState maximumAvailableGameState = GameState.Level1;
 
-	public static GameState currentGameState = GameState.Level5State1;
+	public static GameState currentGameState = GameState.Level1;
 
 }
