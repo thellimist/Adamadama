@@ -24,24 +24,14 @@ public class Platformer2DUserControl : MonoBehaviour
 
 		for (int i = 0; i<myTouches.Length;i++) {
 				if(
-				(MiniGameConfigurations.currentGameState == GameState.Level4) 
+				// 1-4,2-4,3-4 Second Step
+				( (MiniGameConfigurations.selected2GameIs == Game.Game4 && MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive) &&  myTouches[i].position.x >= Screen.width / 2 )
 				||
-				(MiniGameConfigurations.currentGameState == GameState.Level7State2 && myTouches[i].position.x >= Screen.width/2 ) 
-				||
-				(MiniGameConfigurations.currentGameState == GameState.Level9State2 && myTouches[i].position.x >= Screen.width/2 ) 
-				||
-				(MiniGameConfigurations.currentGameState == GameState.Level10State2 && myTouches[i].position.x >= Screen.width/2 ) 
-				||
-				(MiniGameConfigurations.currentGameState == GameState.Level12State3 && myTouches[i].position.x <= Screen.width/2 && myTouches[i].position.y <= Screen.height/2 ) 
-				||
-				(MiniGameConfigurations.currentGameState == GameState.Level13State3 && myTouches[i].position.x <= Screen.width/2 && myTouches[i].position.y <= Screen.height/2 ) 
-				||
-				(MiniGameConfigurations.currentGameState == GameState.Level14State3 && myTouches[i].position.x <= Screen.width/2 && myTouches[i].position.y <= Screen.height/2 ) 
-				||
-				(MiniGameConfigurations.currentGameState == GameState.Level15State4 && myTouches[i].position.x >= Screen.width/2 && myTouches[i].position.y <= Screen.height/2 ) 
+				// 1-2-3-4 Fourth Step
+				( (MiniGameConfigurations.selected4GameIs == Game.Game4 && MiniGameConfigurations.currentGameState == GameState.Selected4GameIsActive) && myTouches[i].position.x >= Screen.width/2 && myTouches[i].position.y <= Screen.height/2 ) 
 				)
-				jump = true;
-				break;
+					jump = true;
+					break;
 		}
 
 

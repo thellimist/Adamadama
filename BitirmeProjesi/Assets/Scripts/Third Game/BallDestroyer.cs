@@ -17,7 +17,7 @@ public class BallDestroyer : MonoBehaviour {
 	{
 		Destroy (theCollision.gameObject);
 		if (GameControllerBasket.isActive) {
-						//MiniGameController.GameOver ();
+					MiniGameController.GameOver ();
 				}
 	}
 }

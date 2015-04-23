@@ -3,6 +3,9 @@ using System.Collections;
 
 public class MiniGameConfigurations : MonoBehaviour {
 
+	public static int twoGameSelectedTotalMaxTime = 8;
+	public static int fourGameSelectedTotalMaxTime = 8;
+	/*
 	public static int firstGameFirstLevelSuccesTime = 10;
 	public static int secondGameSecondLevelSuccesTime = 10;
 	public static int thirdGameThirdLevelSuccesTime = 10;
@@ -20,10 +23,14 @@ public class MiniGameConfigurations : MonoBehaviour {
 	public static int fourteenthLevelSuccesTime = 10;
 	public static int fifteenthLevelSuccesTime = 10;
 
+	*/
 	
+	public static Game selected1GameIs = Game.NotAGame;
+	public static Game selected2GameIs = Game.NotAGame;
+	public static Game selected3GameIs = Game.NotAGame;
+	public static Game selected4GameIs = Game.NotAGame;
 
-	public static GameState maximumAvailableGameState = GameState.Level1;
-
-	public static GameState currentGameState = GameState.Level1;
+	public static GameType currentGameType = GameType.selectedGameCount2;
+	public static GameState currentGameState = GameState.Selected1GameIsActive;
 
 }

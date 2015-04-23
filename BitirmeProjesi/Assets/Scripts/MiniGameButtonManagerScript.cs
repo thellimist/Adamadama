@@ -39,11 +39,16 @@ public class MiniGameButtonManagerScript : MonoBehaviour {
 		GameControllerMissiles.PauseGame();
 		GameControllerBasket.PauseGame();
 		GameControllerRunAndJump.PauseGame();
-		Application.LoadLevel (0);
+		MiniGameConfigurations.currentGameState = GameState.Selected1GameIsActive;
 		Application.LoadLevel ("GameScene");
 	}
 
 	public void toMenuFunction() {
+		GameControllerBalance.PauseGame();
+		GameControllerMissiles.PauseGame();
+		GameControllerBasket.PauseGame();
+		GameControllerRunAndJump.PauseGame();
+		MiniGameConfigurations.currentGameState = GameState.Selected1GameIsActive;
 		Application.LoadLevel ("MainMenuScene");
 	}
 }

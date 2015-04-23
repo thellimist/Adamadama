@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BasketCollider : MonoBehaviour {
 
-	PlayerScript myPlayerScript;
+	BasketControllerScript myPlayerScript;
 	
 	//Automatically run when a scene starts
 
@@ -16,7 +16,7 @@ public class BasketCollider : MonoBehaviour {
 
 		GameObject bucket = GameObject.Find("bucket");
 
-		myPlayerScript = bucket.GetComponent<PlayerScript>();
+		myPlayerScript = bucket.GetComponent<BasketControllerScript>();
 
 	}
 

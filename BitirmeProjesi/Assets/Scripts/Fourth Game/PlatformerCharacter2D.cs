@@ -61,7 +61,7 @@ public class PlatformerCharacter2D : MonoBehaviour
 		if (carpisan.gameObject.tag == "Crate")
 		{
 			//GameObject spawner = GameObject.Find("BoxSpawner");
-			//MiniGameController.GameOver();
+			MiniGameController.GameOver();
 			anim.SetBool("Crouch", true);
 		}
 	}

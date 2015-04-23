@@ -33,7 +33,7 @@ public class MenuManagerScript : MonoBehaviour {
 
 	public void StartGameButton () {
 		MiniGameController.score = 0;
-		Application.LoadLevel ("GameScene");
+		Application.LoadLevel ("SinglePlayerGameSelectionScene");
 	}
 
 	public void rateUsOnGoogleButton () {

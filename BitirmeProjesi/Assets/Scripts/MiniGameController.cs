@@ -40,29 +40,8 @@ public class MiniGameController : MonoBehaviour
 	void Start () 
 	{
 		Time.timeScale = 1;
-		MiniGameConfigurations.currentGameState = MiniGameConfigurations.maximumAvailableGameState;
-		StartCoroutine(myTextSetter (extractLevelInfo(MiniGameConfigurations.currentGameState.ToString())));		
+
 	}
-	IEnumerator myTextSetter(string scoreText) {
-		currentLevelText.text = scoreText;
-		yield return new WaitForSeconds(1.5f);
-		currentLevelText.text = "";
-	}
-
-	public string extractLevelInfo(string gameStateString){
-
-		string gameLevel;
-		int stateIndex = gameStateString.IndexOf("State");
-		if (stateIndex != -1) {
-			gameLevel = gameStateString.Substring (0, stateIndex);
-			gameLevel = gameLevel.Substring(0,5)+" "+gameLevel.Substring(5);
-				} else {
-
-			gameLevel = "LEVEL"+gameStateString.ToCharArray()[5];
-				}
-		return gameLevel;
-	}
-
 
 	public void waitUpdateForGameResetter() {
 
@@ -90,161 +69,38 @@ public class MiniGameController : MonoBehaviour
 				CameraManager ();
 				GameStateManager ();
 				InputManager ();
-		}
-		if (MiniGameConfigurations.currentGameState == GameState.Level1
-				&& score > MiniGameConfigurations.firstGameFirstLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 2"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level2;
-				MiniGameConfigurations.currentGameState = GameState.Level2;	
+		/// 
+
+		if 	(MiniGameConfigurations.currentGameState == GameState.Selected1GameIsActive
+				&& 
+		    (
+		    (MiniGameConfigurations.currentGameType == GameType.selectedGameCount2 && score > MiniGameConfigurations.twoGameSelectedTotalMaxTime/2)
+			||
+			(MiniGameConfigurations.currentGameType == GameType.selectedGameCount4 && score > MiniGameConfigurations.fourGameSelectedTotalMaxTime/4)
+			)
+		    )
+		{
+				MiniGameConfigurations.currentGameState = GameState.Selected2GameIsActive;	
 				waitUpdateForGameResetter();
 
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level2
-				&& score > MiniGameConfigurations.secondGameSecondLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 3"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level3;
-				MiniGameConfigurations.currentGameState = GameState.Level3;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level3
-				&& score > MiniGameConfigurations.thirdGameThirdLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 4"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level4;
-				MiniGameConfigurations.currentGameState = GameState.Level4;
+		} 
+		else if (MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive
+		           && 
+				(MiniGameConfigurations.currentGameType == GameType.selectedGameCount4 && score > MiniGameConfigurations.fourGameSelectedTotalMaxTime/2)
+		         )
+		{
+				MiniGameConfigurations.currentGameState = GameState.Selected3GameIsActive;
 				waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level4
-				&& score > MiniGameConfigurations.fourthGameFourthLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 5"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level5State1;
-				MiniGameConfigurations.currentGameState = GameState.Level5State1;
+		} else if (MiniGameConfigurations.currentGameState == GameState.Selected3GameIsActive
+		           && 
+		           (MiniGameConfigurations.currentGameType == GameType.selectedGameCount4 && score > MiniGameConfigurations.fourGameSelectedTotalMaxTime*3/4)
+		           )
+		{
+				MiniGameConfigurations.currentGameState = GameState.Selected4GameIsActive;
+				waitUpdateForGameResetter();
+		} 
 		}
-		// 2 Games level...
-		else if (MiniGameConfigurations.currentGameState == GameState.Level5State1
-				&& score > MiniGameConfigurations.fifthLevelSuccesTime / 2) {
-				MiniGameConfigurations.currentGameState = GameState.Level5State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level5State2
-				&& score > MiniGameConfigurations.fifthLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 6"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level6State1;
-				MiniGameConfigurations.currentGameState = GameState.Level6State1;
-				waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level6State1
-				&& score > MiniGameConfigurations.sixthLevelSuccesTime / 2) {
-				MiniGameConfigurations.currentGameState = GameState.Level6State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level6State2
-				&& score > MiniGameConfigurations.sixthLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 7"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level7State1;
-				MiniGameConfigurations.currentGameState = GameState.Level7State1;
-				waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level7State1
-				&& score > MiniGameConfigurations.seventhLevelSuccesTime / 2) {
-				MiniGameConfigurations.currentGameState = GameState.Level7State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level7State2
-				&& score > MiniGameConfigurations.seventhLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 8"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level8State1;
-				MiniGameConfigurations.currentGameState = GameState.Level8State1;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level8State1
-				&& score > MiniGameConfigurations.eigthLevelSuccesTime / 2) {
-				MiniGameConfigurations.currentGameState = GameState.Level8State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level8State2
-				&& score > MiniGameConfigurations.eigthLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 9"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level9State1;
-				MiniGameConfigurations.currentGameState = GameState.Level9State1;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level9State1
-				&& score > MiniGameConfigurations.ninethLevelSuccesTime / 2) {
-				MiniGameConfigurations.currentGameState = GameState.Level9State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level9State2
-				&& score > MiniGameConfigurations.ninethLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 10"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level10State1;
-				MiniGameConfigurations.currentGameState = GameState.Level10State1;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level10State1
-				&& score > MiniGameConfigurations.tenthLevelSuccesTime / 2) {
-				MiniGameConfigurations.currentGameState = GameState.Level10State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level10State2
-				&& score > MiniGameConfigurations.tenthLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 11"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level11State1;
-				MiniGameConfigurations.currentGameState = GameState.Level11State1;
-			waitUpdateForGameResetter();
-		}
-		// 3 Games Levels
-		else if (MiniGameConfigurations.currentGameState == GameState.Level11State1
-								&& score > MiniGameConfigurations.eleventhLevelSuccesTime / 3) {
-								MiniGameConfigurations.currentGameState = GameState.Level11State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level11State2
-				&& score > MiniGameConfigurations.eleventhLevelSuccesTime * 2 / 3) {
-				MiniGameConfigurations.currentGameState = GameState.Level11State3;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level11State3
-				&& score > MiniGameConfigurations.eleventhLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 12"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level12State1;
-				MiniGameConfigurations.currentGameState = GameState.Level12State1;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level12State1
-				&& score > MiniGameConfigurations.twelvethLevelSuccesTime / 3) {
-				MiniGameConfigurations.currentGameState = GameState.Level12State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level12State2
-				&& score > MiniGameConfigurations.twelvethLevelSuccesTime * 2 / 3) {
-				MiniGameConfigurations.currentGameState = GameState.Level12State3;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level12State3
-				&& score > MiniGameConfigurations.twelvethLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 13"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level13State1;
-				MiniGameConfigurations.currentGameState = GameState.Level13State1;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level13State1
-				&& score > MiniGameConfigurations.thirteenthLevelSuccesTime / 3) {
-				MiniGameConfigurations.currentGameState = GameState.Level13State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level13State2
-				&& score > MiniGameConfigurations.thirteenthLevelSuccesTime * 2 / 3) {
-				MiniGameConfigurations.currentGameState = GameState.Level13State3;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level13State3
-				&& score > MiniGameConfigurations.thirteenthLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 14"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level14State1;
-				MiniGameConfigurations.currentGameState = GameState.Level14State1;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level14State1
-				&& score > MiniGameConfigurations.fourteenthLevelSuccesTime / 3) {
-				MiniGameConfigurations.currentGameState = GameState.Level14State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level14State2
-				&& score > MiniGameConfigurations.fourteenthLevelSuccesTime * 2 / 3) {
-				MiniGameConfigurations.currentGameState = GameState.Level14State3;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level14State3
-				&& score > MiniGameConfigurations.fourteenthLevelSuccesTime) {
-				StartCoroutine (myTextSetter ("LEVEL 15"));
-				score = 0;
-				MiniGameConfigurations.maximumAvailableGameState = GameState.Level14State1;
-				MiniGameConfigurations.currentGameState = GameState.Level15State1;
-			waitUpdateForGameResetter();
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level15State1
-				&& score > MiniGameConfigurations.fifteenthLevelSuccesTime / 4) {
-				MiniGameConfigurations.currentGameState = GameState.Level15State2;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level15State2
-				&& score > MiniGameConfigurations.fifteenthLevelSuccesTime * 2 / 4) {
-				MiniGameConfigurations.currentGameState = GameState.Level15State3;
-		} else if (MiniGameConfigurations.currentGameState == GameState.Level15State3
-				&& score > MiniGameConfigurations.fifteenthLevelSuccesTime * 3 / 4) {
-				MiniGameConfigurations.currentGameState = GameState.Level15State4;
-			}
+
 	}
 
 	public static void GameOver()
@@ -261,133 +117,47 @@ public class MiniGameController : MonoBehaviour
 
 	void GameStateManager()
 	{
-		switch (MiniGameConfigurations.currentGameState)
-		{ 
-		case GameState.MainMenu:
-			break;
-		case GameState.GameOver:
-			break;
-		case GameState.Level1:
+		switch (MiniGameConfigurations.currentGameState) { 
+				case GameState.MainMenu:
+						break;
+				case GameState.GameOver:
+						break;
+				case GameState.Selected1GameIsActive:
+						gameStarterAccordingToGame(MiniGameConfigurations.selected1GameIs.ToString());
+						break;
+				case GameState.Selected2GameIsActive:
+						gameStarterAccordingToGame(MiniGameConfigurations.selected1GameIs.ToString());
+						gameStarterAccordingToGame(MiniGameConfigurations.selected2GameIs.ToString());
+						break;
+				case GameState.Selected3GameIsActive:
+						gameStarterAccordingToGame(MiniGameConfigurations.selected1GameIs.ToString());
+						gameStarterAccordingToGame(MiniGameConfigurations.selected2GameIs.ToString());
+						gameStarterAccordingToGame(MiniGameConfigurations.selected3GameIs.ToString());
+						break;
+				case GameState.Selected4GameIsActive:
+						gameStarterAccordingToGame(MiniGameConfigurations.selected1GameIs.ToString());
+						gameStarterAccordingToGame(MiniGameConfigurations.selected2GameIs.ToString());
+						gameStarterAccordingToGame(MiniGameConfigurations.selected3GameIs.ToString());
+						gameStarterAccordingToGame(MiniGameConfigurations.selected4GameIs.ToString());
+						break;
+				}
+	}
+
+	public void gameStarterAccordingToGame(string gameNo){
+
+		if (gameNo == "Game1") {
 			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level2:
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level3:
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level4:
-			GameControllerRunAndJump.StartGame();
-			break;
-		case GameState.Level5State1:	
-			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level5State2:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level6State1:
-			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level6State2:
-			GameControllerBalance.StartGame();
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level7State1:
-			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level7State2:
-			GameControllerBalance.StartGame();
-			GameControllerRunAndJump.StartGame();
-			break;
-		case GameState.Level8State1:
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level8State2:
-			GameControllerMissiles.StartGame();
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level9State1:
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level9State2:
-			GameControllerMissiles.StartGame();
-			GameControllerRunAndJump.StartGame();
-			break;
-		case GameState.Level10State1:
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level10State2:
-			GameControllerBasket.StartGame();
-			GameControllerRunAndJump.StartGame();
-			break;
-		case GameState.Level11State1:
-			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level11State2:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level11State3:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level12State1:
-			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level12State2:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level12State3:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			GameControllerRunAndJump.StartGame();
-			break;
-		case GameState.Level13State1:
-			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level13State2:
-			GameControllerBalance.StartGame();
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level13State3:
-			GameControllerBalance.StartGame();
-			GameControllerBasket.StartGame();
-			GameControllerRunAndJump.StartGame();
-			break;
-		case GameState.Level14State1:
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level14State2:
-			GameControllerMissiles.StartGame();
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level14State3:
-			GameControllerMissiles.StartGame();
-			GameControllerBasket.StartGame();
-			GameControllerRunAndJump.StartGame();
-			break;
-		case GameState.Level15State1:
-			GameControllerBalance.StartGame();
-			break;
-		case GameState.Level15State2:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			break;
-		case GameState.Level15State3:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			GameControllerBasket.StartGame();
-			break;
-		case GameState.Level15State4:
-			GameControllerBalance.StartGame();
-			GameControllerMissiles.StartGame();
-			GameControllerBasket.StartGame();
-			GameControllerRunAndJump.StartGame();
-			break;
 		}
+		else if (gameNo == "Game2") {
+			GameControllerMissiles.StartGame();
+		}
+		else if (gameNo == "Game3") {
+			GameControllerBasket.StartGame();
+		}
+		else if (gameNo == "Game4") {
+			GameControllerRunAndJump.StartGame();
+		}
+
 	}
 
 	void InputManager()
@@ -408,329 +178,127 @@ public class MiniGameController : MonoBehaviour
 		{ 
 		case GameState.MainMenu:
 			break;
-		case GameState.Level1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		case GameState.Selected1GameIsActive:
+			manageCameraAccordingTo1Game(MiniGameConfigurations.selected1GameIs.ToString());
 			break;
-		case GameState.Level2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		case GameState.Selected2GameIsActive:
+			manageCameraAccordingTo2Game(MiniGameConfigurations.selected1GameIs.ToString(),
+			                             MiniGameConfigurations.selected2GameIs.ToString());
 			break;
-		case GameState.Level3:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		case GameState.Selected3GameIsActive:
+			manageCameraAccordingTo3Game(MiniGameConfigurations.selected1GameIs.ToString(),
+			                             MiniGameConfigurations.selected2GameIs.ToString(),
+			                             MiniGameConfigurations.selected3GameIs.ToString());
 			break;
-		case GameState.Level4:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		case GameState.Selected4GameIsActive:
+			manageCameraAccordingTo4Game(MiniGameConfigurations.selected1GameIs.ToString(),
+			                             MiniGameConfigurations.selected2GameIs.ToString(),
+			                             MiniGameConfigurations.selected3GameIs.ToString(),
+			                             MiniGameConfigurations.selected4GameIs.ToString());
 			break;
-		case GameState.Level5State1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level5State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level6State1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level6State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level7State1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level7State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			break;
-		case GameState.Level8State1:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level8State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level9State1:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level9State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			break;
-		case GameState.Level10State1:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level10State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			break;
-		case GameState.Level11State1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level11State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level11State3:
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level12State1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level12State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level12State3:
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-			break;
-		case GameState.Level13State1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level13State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level13State3:
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-			break;
-		case GameState.Level14State1:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);			
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;	
-		case GameState.Level14State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);			
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level14State3:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);			
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-			break;
-		case GameState.Level15State1:
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level15State2:
-			firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level15State3:
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondHalfCam.rect = new Rect(0.5f, 0.5f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		case GameState.Level15State4:
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			secondFullCam.rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
-			secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-			thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			fourthFullCam.rect = new Rect(0.5f, 0f, 0.5f, 0.5f);
-			fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-			break;
-		
 		case GameState.GameOver:
 			break;
 		}
+	}
+
+
+	public void manageCameraAccordingTo1Game(string gameNo){
+		resetCameraPositionsAndViews ();
+		if (gameNo == "Game1") {
+			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+		}
+		else if (gameNo == "Game2") {
+			secondFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+		}
+		else if (gameNo == "Game3") {
+			thirdFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+		}
+		else if (gameNo == "Game4") {
+			fourthFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+		}
+		// TODO ADD GAME Game 5 AND GAME 6
+	}
+
+	public void manageCameraAccordingTo2Game(string firstGameNo,string secondGameNo){
+
+		resetCameraPositionsAndViews ();
+		if (firstGameNo == "Game1") {
+			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
+			if(secondGameNo == "Game2"){
+				secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+			}
+			else if(secondGameNo == "Game3"){
+				thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+			}
+			else if(secondGameNo == "Game4"){
+				fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+			}
+		}
+		else if (firstGameNo == "Game2") {
+			secondHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
+			if(secondGameNo == "Game3"){
+				thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+			}
+			else if(secondGameNo == "Game4"){
+				fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+			}
+		}
+		else if (firstGameNo == "Game3") {
+			thirdHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
+			fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+		}
+		// TODO ADD GAME Game 5 AND GAME 6
+	}
+
+	public void manageCameraAccordingTo3Game(string firstGameNo,string secondGameNo,string thirdGameNo){
+		resetCameraPositionsAndViews ();
+		if (firstGameNo == "Game1" && secondGameNo == "Game2" && thirdGameNo =="Game3") {
+			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
+			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+			thirdFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
+		}
+		else if (firstGameNo == "Game1" && secondGameNo == "Game2" && thirdGameNo =="Game4") {
+			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
+			secondHalfCam.rect = new Rect(0.5f, 0.5f, 0.5f, 1f);
+			fourthFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
+		}
+		else if (firstGameNo == "Game1" && secondGameNo == "Game3" && thirdGameNo =="Game4") {
+			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
+			thirdHalfCam.rect = new Rect(0.5f, 0.5f, 0.5f, 1f);
+			fourthFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
+		}
+		else if (firstGameNo == "Game2" && secondGameNo == "Game3" && thirdGameNo =="Game4") {
+			secondFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
+			thirdHalfCam.rect = new Rect(0.5f, 0.5f, 0.5f, 1f);
+			fourthFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
+		}
+		// TODO ADD GAME Game 5 AND GAME 6
+	}
+	public void manageCameraAccordingTo4Game(string firstGameNo,string secondGameNo,string thirdGameNo,string fourthGameNo){
+		resetCameraPositionsAndViews ();
+		if (firstGameNo == "Game1" && secondGameNo == "Game2" && thirdGameNo =="Game3" && fourthGameNo =="Game4") {
+			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
+			secondFullCam.rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
+			thirdFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
+			fourthFullCam.rect = new Rect(0.5f, 0f, 0.5f, 0.5f);
+		}
+		// TODO ADD GAME Game 5 AND GAME 6
+	}
+
+	public void resetCameraPositionsAndViews(){
+
+		firstFullCam.rect = new Rect(0f, 0f, 0f, 0f);
+		firstHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		secondFullCam.rect = new Rect(0f, 0f, 0f, 0f);
+		secondHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		thirdFullCam.rect = new Rect(0f, 0f, 0f, 0f);
+		thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
+		fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+
+		// TODO ADD GAME Game 5 AND GAME 6
+
+
 	}
 
 	public static Vector3 getAccelerometerInput()

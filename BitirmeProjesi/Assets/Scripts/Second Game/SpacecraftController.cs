@@ -40,48 +40,25 @@ public class SpacecraftController : MonoBehaviour {
 						
 						for (int i = 0; i<myTouches.Length; i++) {
 								if (
-					(MiniGameConfigurations.currentGameState == GameState.Level2) 
-					||
-					(MiniGameConfigurations.currentGameState == GameState.Level8State1) 
-					||
-					(MiniGameConfigurations.currentGameState == GameState.Level9State1) 
-					||
-					(MiniGameConfigurations.currentGameState == GameState.Level14State1) 
-					||
-					(MiniGameConfigurations.currentGameState == GameState.Level5State2 &&  myTouches[i].position.x >= Screen.width / 2)
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level8State2 &&  myTouches[i].position.x <= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level9State2 &&  myTouches[i].position.x <= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level11State2 &&  myTouches[i].position.x >= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level11State3 &&  myTouches[i].position.x >= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level12State2 &&  myTouches[i].position.x >= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level12State3 &&  myTouches[i].position.x >= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level14State2 &&  myTouches[i].position.x <= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level14State3 &&  myTouches[i].position.x <= Screen.width / 2 &&  myTouches[i].position.y >= Screen.height / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level15State2 &&  myTouches[i].position.x >= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level15State3 &&  myTouches[i].position.x >= Screen.width / 2 )
-					||
-					( MiniGameConfigurations.currentGameState == GameState.Level15State4 &&  myTouches[i].position.x >= Screen.width / 2 &&  myTouches[i].position.y >= Screen.height / 2 )
-
-
-
-					)
-					{
-
-
-
-
-
-
+								// 2-3,2-4,2-3-4 first step
+								(MiniGameConfigurations.selected1GameIs == Game.Game2 && MiniGameConfigurations.currentGameState == GameState.Selected1GameIsActive) 
+								||
+								// 2-3,2-4,2-3-4 second step
+								( (MiniGameConfigurations.selected1GameIs == Game.Game2 && MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive) &&  myTouches[i].position.x <= Screen.width / 2 )
+								||
+								// 2-3-4 third step
+								((MiniGameConfigurations.selected1GameIs == Game.Game2 && MiniGameConfigurations.currentGameState == GameState.Selected3GameIsActive) &&  myTouches[i].position.x <= Screen.width / 2 &&  myTouches[i].position.y >= Screen.height / 2 )
+								||
+								// 1-2,1-2-3,1-2-4,1-2-3-4 second step
+								((MiniGameConfigurations.selected2GameIs == Game.Game2 && MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive)  &&  myTouches[i].position.x >= Screen.width / 2)
+								||
+								// 1-2-3,1-2-4,1-2-3-4 third step
+								((MiniGameConfigurations.selected2GameIs == Game.Game2 && MiniGameConfigurations.currentGameState == GameState.Selected3GameIsActive)  &&  myTouches[i].position.x >= Screen.width / 2)
+								// 1-2-3-4 last step
+								||			
+								((MiniGameConfigurations.selected2GameIs == Game.Game2 && MiniGameConfigurations.currentGameState == GameState.Selected4GameIsActive)  &&  myTouches[i].position.x >= Screen.width / 2 &&  myTouches[i].position.y >= Screen.height / 2)
+								)
+								{
 										Vector3 position = this.transform.position;
 										Vector2 touchDeltaPosition = myTouches [i].deltaPosition;
 										position.y += touchDeltaPosition.y * speed;
