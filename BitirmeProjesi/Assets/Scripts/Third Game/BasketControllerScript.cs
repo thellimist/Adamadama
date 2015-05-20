@@ -32,32 +32,13 @@ public class BasketControllerScript : MonoBehaviour {
 						if (Input.GetKey (KeyCode.LeftArrow)) {
 								transform.position -= new Vector3 (speed * Time.deltaTime, 0.0f, 0.0f);
 						} else {
-								speed = 384.0f / Screen.width;
+								speed = 0.2f;
 								// Move object across XY plane
 								Touch[] myTouches = Input.touches;
 					
 								float xMove = 0;
 								for (int i = 0; i<myTouches.Length; i++) {
-										if
-										(
-										// 3-4 First Step
-										(MiniGameConfigurations.selected1GameIs == Game.Game3 && MiniGameConfigurations.currentGameState == GameState.Selected1GameIsActive)  
-										||
-										// 3-4 Secod Step
-										( (MiniGameConfigurations.selected1GameIs == Game.Game3 && MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive) &&  myTouches[i].position.x <= Screen.width / 2 )
-										||
-										// 1-3-4,2-3-4 Second Step
-										( (MiniGameConfigurations.selected2GameIs == Game.Game3 && MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive) &&  myTouches[i].position.x >= Screen.width / 2 )
-										||
-										// 1-3-4,2-3-4 Third Step
-										( (MiniGameConfigurations.selected2GameIs == Game.Game3 && MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive) &&  myTouches[i].position.x >= Screen.width / 2 )
-										||
-										// 1-2-3 Third Step
-										( (MiniGameConfigurations.selected3GameIs == Game.Game3 && MiniGameConfigurations.currentGameState == GameState.Selected3GameIsActive) &&  myTouches[i].position.x <= Screen.width / 2 && myTouches[i].position.y <= Screen.height / 2 )
-										||
-										// 1-2-3-4 Third Step
-										( (MiniGameConfigurations.selected3GameIs == Game.Game3 && MiniGameConfigurations.currentGameState == GameState.Selected4GameIsActive) &&  myTouches[i].position.x <= Screen.width / 2 && myTouches[i].position.y <= Screen.height / 2 )
-										)
+										if (MiniGameController.miniGameInputControl(myTouches[i],Game.Game3,MiniGameConfigurations.currentGameType,MiniGameConfigurations.currentGameState))
 										{
 												xMove = myTouches [i].deltaPosition.x * speed;
 												break;

@@ -13,6 +13,7 @@ public enum Game{
 };
 public enum GameType{
 
+	selectedGameCount1,
 	selectedGameCount2,
 	selectedGameCount4
 };

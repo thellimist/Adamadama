@@ -13,6 +13,13 @@ public class MiniGameController : MonoBehaviour
 	public Camera thirdHalfCam;
 	public Camera fourthFullCam;
 	public Camera fourthHalfCam;
+	public Camera fifthFullCam;
+	public Camera fifthHalfCam;
+	public Camera sixthFullCam;
+	public Camera sixthHalfCam;
+
+	public Canvas canvas2;
+	public Canvas canvas3;
 
 	public Text	currentLevelText;
 
@@ -46,10 +53,10 @@ public class MiniGameController : MonoBehaviour
 	public void waitUpdateForGameResetter() {
 
 		canCancellOperation = false;
-		GameControllerBalance.PauseGame ();
-		GameControllerMissiles.PauseGame ();	
-		GameControllerBasket.PauseGame ();
-		GameControllerRunAndJump.PauseGame ();
+		//GameControllerBalance.PauseGame ();
+		//GameControllerMissiles.PauseGame ();	
+		//GameControllerBasket.PauseGame ();
+		//GameControllerRunAndJump.PauseGame ();
 		canCancellOperation = true;
 
 	}
@@ -57,6 +64,7 @@ public class MiniGameController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		/*
 		if (MainMenu.isSoundOn == true) {
 						if (GetComponent<AudioSource>().isPlaying == false) {
 								GetComponent<AudioSource>().Play ();
@@ -64,13 +72,27 @@ public class MiniGameController : MonoBehaviour
 				} else {
 			GetComponent<AudioSource>().Stop();
 				}
+		*/
 		score += Time.deltaTime;
 		if (gameOver == false) {
 				CameraManager ();
 				GameStateManager ();
 				InputManager ();
 		/// 
-
+			if(GameControllerCalculation.isActive){
+				if(fifthFullCam.rect == new Rect(0f,0f,0,0f)){
+					(canvas2).worldCamera = fifthHalfCam;
+				}else{
+					(canvas2).worldCamera = fifthFullCam;
+				}
+			}
+			if(GameControllerNoteMemory.isActive){
+				if(sixthFullCam.rect == new Rect(0f,0f,0,0f)){
+					(canvas3).worldCamera = sixthHalfCam;
+				}else{
+					(canvas3).worldCamera = sixthFullCam;
+				}
+			}
 		if 	(MiniGameConfigurations.currentGameState == GameState.Selected1GameIsActive
 				&& 
 		    (
@@ -108,10 +130,12 @@ public class MiniGameController : MonoBehaviour
 		// Set gameover attributes
 		gameOver = true;
 		MiniGameConfigurations.currentGameState = GameState.GameOver;
-		//GameControllerBalance.PauseGame();
-		//GameControllerMissiles.PauseGame();
-		//GameControllerBasket.PauseGame();
-		//GameControllerRunAndJump.PauseGame();
+		GameControllerBalance.PauseGame();
+		GameControllerMissiles.PauseGame();
+		GameControllerBasket.PauseGame();
+		GameControllerRunAndJump.PauseGame();
+		GameControllerCalculation.PauseGame();
+		GameControllerNoteMemory.PauseGame();
 		Time.timeScale = 0;
 	}
 
@@ -156,6 +180,12 @@ public class MiniGameController : MonoBehaviour
 		}
 		else if (gameNo == "Game4") {
 			GameControllerRunAndJump.StartGame();
+		}
+		else if (gameNo == "Game5") {
+			GameControllerCalculation.StartGame();
+		}
+		else if (gameNo == "Game6") {
+			GameControllerNoteMemory.StartGame();
 		}
 
 	}
@@ -204,85 +234,84 @@ public class MiniGameController : MonoBehaviour
 
 	public void manageCameraAccordingTo1Game(string gameNo){
 		resetCameraPositionsAndViews ();
+		getCameraByGameNo(gameNo,"Full").rect = new Rect(0f, 0f, 1f, 1f);
+	}
+
+	public Camera getCameraByGameNo(string gameNo,string fullOrHalf){
 		if (gameNo == "Game1") {
-			firstFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+			if(fullOrHalf =="Full"){
+				return firstFullCam;
+			}
+			else{
+				return firstHalfCam;
+			}
 		}
 		else if (gameNo == "Game2") {
-			secondFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+			if(fullOrHalf =="Full"){
+				return secondFullCam;
+			}
+			else{
+				return secondHalfCam;
+			}
 		}
 		else if (gameNo == "Game3") {
-			thirdFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+			if(fullOrHalf =="Full"){
+				return thirdFullCam;
+			}
+			else{
+				return thirdHalfCam;
+			}
 		}
 		else if (gameNo == "Game4") {
-			fourthFullCam.rect = new Rect(0f, 0f, 1f, 1f);
+			if(fullOrHalf =="Full"){
+				return fourthFullCam;
+			}
+			else{
+				return fourthHalfCam;
+			}
 		}
-		// TODO ADD GAME Game 5 AND GAME 6
+		else if (gameNo == "Game5") {
+			if(fullOrHalf =="Full"){
+				return fifthFullCam;
+			}
+			else{
+				return fifthHalfCam;
+			}
+		}
+		else if (gameNo == "Game6") {
+			if(fullOrHalf =="Full"){
+				return sixthFullCam;
+			}
+			else{
+				return sixthHalfCam;
+			}
+		}
+		return null;
+
 	}
 
 	public void manageCameraAccordingTo2Game(string firstGameNo,string secondGameNo){
 
 		resetCameraPositionsAndViews ();
-		if (firstGameNo == "Game1") {
-			firstHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			if(secondGameNo == "Game2"){
-				secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			}
-			else if(secondGameNo == "Game3"){
-				thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			}
-			else if(secondGameNo == "Game4"){
-				fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			}
-		}
-		else if (firstGameNo == "Game2") {
-			secondHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			if(secondGameNo == "Game3"){
-				thirdHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			}
-			else if(secondGameNo == "Game4"){
-				fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			}
-		}
-		else if (firstGameNo == "Game3") {
-			thirdHalfCam.rect = new Rect(0f, 0f, 0.5f, 1f);
-			fourthHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-		}
-		// TODO ADD GAME Game 5 AND GAME 6
+		getCameraByGameNo(firstGameNo,"Half").rect = new Rect(0f, 0f, 0.5f, 1f);
+		getCameraByGameNo(secondGameNo,"Half").rect = new Rect(0.5f, 0f, 0.5f, 1f);
+
 	}
 
 	public void manageCameraAccordingTo3Game(string firstGameNo,string secondGameNo,string thirdGameNo){
 		resetCameraPositionsAndViews ();
-		if (firstGameNo == "Game1" && secondGameNo == "Game2" && thirdGameNo =="Game3") {
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			secondHalfCam.rect = new Rect(0.5f, 0f, 0.5f, 1f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-		}
-		else if (firstGameNo == "Game1" && secondGameNo == "Game2" && thirdGameNo =="Game4") {
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			secondHalfCam.rect = new Rect(0.5f, 0.5f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-		}
-		else if (firstGameNo == "Game1" && secondGameNo == "Game3" && thirdGameNo =="Game4") {
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			thirdHalfCam.rect = new Rect(0.5f, 0.5f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-		}
-		else if (firstGameNo == "Game2" && secondGameNo == "Game3" && thirdGameNo =="Game4") {
-			secondFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			thirdHalfCam.rect = new Rect(0.5f, 0.5f, 0.5f, 1f);
-			fourthFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-		}
-		// TODO ADD GAME Game 5 AND GAME 6
+		getCameraByGameNo(firstGameNo,"Full").rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
+		getCameraByGameNo(secondGameNo,"Half").rect = new Rect(0.5f, 0f, 0.5f, 1f);
+		getCameraByGameNo(thirdGameNo,"Full").rect = new Rect(0f, 0f, 0.5f, 0.5f);
+
 	}
 	public void manageCameraAccordingTo4Game(string firstGameNo,string secondGameNo,string thirdGameNo,string fourthGameNo){
 		resetCameraPositionsAndViews ();
-		if (firstGameNo == "Game1" && secondGameNo == "Game2" && thirdGameNo =="Game3" && fourthGameNo =="Game4") {
-			firstFullCam.rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
-			secondFullCam.rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
-			thirdFullCam.rect = new Rect(0f, 0f, 0.5f, 0.5f);
-			fourthFullCam.rect = new Rect(0.5f, 0f, 0.5f, 0.5f);
-		}
-		// TODO ADD GAME Game 5 AND GAME 6
+		getCameraByGameNo(firstGameNo,"Full").rect = new Rect(0f, 0.5f, 0.5f, 0.5f);
+		getCameraByGameNo(secondGameNo,"Full").rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
+		getCameraByGameNo(thirdGameNo,"Full").rect = new Rect(0f, 0f, 0.5f, 0.5f);
+		getCameraByGameNo(fourthGameNo,"Full").rect = new Rect(0.5f, 0f, 0.5f, 0.5f);
+
 	}
 
 	public void resetCameraPositionsAndViews(){
@@ -295,9 +324,10 @@ public class MiniGameController : MonoBehaviour
 		thirdHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
 		fourthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
 		fourthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
-
-		// TODO ADD GAME Game 5 AND GAME 6
-
+		fifthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
+		fifthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
+		sixthFullCam.rect = new Rect(0f, 0f, 0f, 0f);
+		sixthHalfCam.rect = new Rect(0f, 0f, 0f, 0f);
 
 	}
 
@@ -310,5 +340,136 @@ public class MiniGameController : MonoBehaviour
 	{
 		return touchDeltaPosition;
 	}
+
+
+	public static bool miniGameInputControl(Touch currentTouch,Game myGame,GameType gameType,GameState gameState){
+
+	if (gameType == GameType.selectedGameCount1) {
+			return true;
+	}
+	else if (gameType == GameType.selectedGameCount2) {
+			if(gameState == GameState.Selected1GameIsActive){
+				return true;
+			}
+			else if(gameState == GameState.Selected2GameIsActive){
+
+				if(myGame == MiniGameConfigurations.selected1GameIs){
+					return isInputPositionCorrect(currentTouch,"LEFT");
+				}
+				else if(myGame == MiniGameConfigurations.selected2GameIs){
+					return isInputPositionCorrect(currentTouch,"RIGHT");
+				}
+			}
+	}
+	else if (gameType == GameType.selectedGameCount4) {
+			if(gameState == GameState.Selected1GameIsActive){
+				return true;
+			}
+			else if(gameState == GameState.Selected2GameIsActive){
+				
+				if(myGame == MiniGameConfigurations.selected1GameIs){
+					return isInputPositionCorrect(currentTouch,"LEFT");
+				}
+				else if(myGame == MiniGameConfigurations.selected2GameIs){
+					return isInputPositionCorrect(currentTouch,"RIGHT");
+				}
+			}
+			else if(gameState == GameState.Selected3GameIsActive){
+				
+				if(myGame == MiniGameConfigurations.selected1GameIs){
+					return isInputPositionCorrect(currentTouch,"UPPERLEFT");
+				}
+				else if(myGame == MiniGameConfigurations.selected2GameIs){
+					return isInputPositionCorrect(currentTouch,"RIGHT");
+				}
+				else if(myGame == MiniGameConfigurations.selected3GameIs){
+					return isInputPositionCorrect(currentTouch,"BOTTOMLEFT");
+				}
+			}
+			else if(gameState == GameState.Selected4GameIsActive){
+				
+				if(myGame == MiniGameConfigurations.selected1GameIs){
+					return isInputPositionCorrect(currentTouch,"UPPERLEFT");
+				}
+				else if(myGame == MiniGameConfigurations.selected2GameIs){
+					return isInputPositionCorrect(currentTouch,"UPPERRIGHT");
+				}
+				else if(myGame == MiniGameConfigurations.selected3GameIs){
+					return isInputPositionCorrect(currentTouch,"BOTTOMLEFT");
+				}
+				else if(myGame == MiniGameConfigurations.selected4GameIs){
+					return isInputPositionCorrect(currentTouch,"BOTTOMRIGHT");
+				}
+			}
+	}
+		return true;
+	
+	}
+
+	public static bool isInputPositionCorrect(Touch currentTouch,string inWhere){
+
+		if (inWhere == "LEFT") {
+			if(currentTouch.position.x <= Screen.width / 2){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		}
+		else if (inWhere == "RIGHT") {
+			if(currentTouch.position.x >= Screen.width / 2){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		}
+		else if (inWhere == "UPPERLEFT") {
+			if((currentTouch.position.x <= Screen.width / 2) && currentTouch.position.y >= Screen.height/2){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		}
+		else if (inWhere == "UPPERRIGHT") {
+			if((currentTouch.position.x >= Screen.width / 2) && currentTouch.position.y >= Screen.height/2){
+				return true;
+			}
+			else{
+				return false;
+			}
+
+		}
+		
+		else if (inWhere == "BOTTOMLEFT") {
+			if((currentTouch.position.x <= Screen.width / 2) && currentTouch.position.y <= Screen.height/2 ){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		}
+		
+		else if (inWhere == "BOTTOMRIGHT") {
+			if((currentTouch.position.x >= Screen.width / 2) && currentTouch.position.y <= Screen.height/2 ){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		}
+		return true;
+
+
+	}
+
+
+
 
 }

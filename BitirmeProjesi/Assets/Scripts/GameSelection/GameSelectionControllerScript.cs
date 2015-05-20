@@ -77,12 +77,15 @@ public class GameSelectionControllerScript : MonoBehaviour {
 			selectedOne.Add("Game6");		
 		}
 
-		if (selectedOne.Count != 2 && selectedOne.Count != 4) {
+		if (selectedOne.Count != 1 && selectedOne.Count != 2 && selectedOne.Count != 4) {
 			myErrorTextField.gameObject.SetActive(true);
 			StartCoroutine(Wait(1.5f));		
 			return;
 		}
-		if (selectedOne.Count == 2) {
+		if (selectedOne.Count == 1) {
+			MiniGameConfigurations.currentGameType = GameType.selectedGameCount1;
+		}
+		else if (selectedOne.Count == 2) {
 			MiniGameConfigurations.currentGameType = GameType.selectedGameCount2;
 		}
 		else if (selectedOne.Count == 4) {

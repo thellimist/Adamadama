@@ -23,15 +23,10 @@ public class Platformer2DUserControl : MonoBehaviour
 		//&& myTouches[i].phase == TouchPhase.Ended)
 
 		for (int i = 0; i<myTouches.Length;i++) {
-				if(
-				// 1-4,2-4,3-4 Second Step
-				( (MiniGameConfigurations.selected2GameIs == Game.Game4 && MiniGameConfigurations.currentGameState == GameState.Selected2GameIsActive) &&  myTouches[i].position.x >= Screen.width / 2 )
-				||
-				// 1-2-3-4 Fourth Step
-				( (MiniGameConfigurations.selected4GameIs == Game.Game4 && MiniGameConfigurations.currentGameState == GameState.Selected4GameIsActive) && myTouches[i].position.x >= Screen.width/2 && myTouches[i].position.y <= Screen.height/2 ) 
-				)
+			if (MiniGameController.miniGameInputControl(myTouches[i],Game.Game4,MiniGameConfigurations.currentGameType,MiniGameConfigurations.currentGameState)){
 					jump = true;
 					break;
+			}
 		}
 
 

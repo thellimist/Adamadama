@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		GetComponent<AudioSource>().Play ();
+		//GetComponent<AudioSource>().Play ();
 	}
 	void Awake() {
 		DontDestroyOnLoad(transform.gameObject);
@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour
 		if (Input.GetKey ("escape")) {
 				Application.Quit();
 		}
+		/*
 		if (MainMenu.isSoundOn == true) {
 				if(GetComponent<AudioSource>().isPlaying == true){
 				}
@@ -29,6 +30,7 @@ public class MainMenu : MonoBehaviour
 		} else {
 			GetComponent<AudioSource>().Stop();
 		}
+		*/
 	}
 
 

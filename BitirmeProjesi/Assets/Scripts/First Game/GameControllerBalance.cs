@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameControllerBalance  {
+public class GameControllerBalance: AbstractGameController  {
 
 	public static bool isActive = false;
 	
